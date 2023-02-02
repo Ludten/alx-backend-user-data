@@ -5,6 +5,8 @@ logger module
 
 
 import logging
+import os
+import mysql.connector
 import re
 from typing import List, Tuple
 
@@ -62,3 +64,15 @@ def get_logger() -> logging.Logger:
     h1.setFormatter(RedactingFormatter(fields=PII_FIELDS))
     logger.addHandler(h1)
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    create a connection to the database
+    """
+    mydb = mysql.connector.connect(
+        host=os.environ["PERSONAL_DATA_DB_HOST"],
+        user=os.environ["PERSONAL_DATA_DB_USERNAME"],
+        password=os.environ["PERSONAL_DATA_DB_PASSWORD"]
+    )
+    return mydb
