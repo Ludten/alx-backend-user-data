@@ -8,7 +8,7 @@ import logging
 import os
 import mysql.connector
 import re
-from typing import List, Tuple
+from typing import List
 
 PII_FIELDS = ('email', 'phone', 'ssn', 'password', 'name')
 
@@ -72,6 +72,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     """
     mydb = mysql.connector.connect(
         host=os.environ["PERSONAL_DATA_DB_HOST"],
+        database=os.environ["PERSONAL_DATA_DB_NAME"],
         user=os.environ["PERSONAL_DATA_DB_USERNAME"],
         password=os.environ["PERSONAL_DATA_DB_PASSWORD"]
     )
