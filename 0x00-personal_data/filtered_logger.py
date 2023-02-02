@@ -6,7 +6,9 @@ logger module
 
 import logging
 import re
-from typing import List
+from typing import List, Tuple
+
+PII_FIELDS: Tuple[str] = ('email', 'phone', 'ssn', 'password', ' ip')
 
 
 def filter_datum(
@@ -47,3 +49,13 @@ class RedactingFormatter(logging.Formatter):
                               "levelname": record.levelname,
                               "asctime": record.asctime,
                               "message": record.message}
+
+    def get_logger() -> logging.Logger:
+        """
+        log and format data
+        """
+        logger = logging.Logger("user_data", logging.INFO)
+        logger.propagate = False
+        h1 = logging.StreamHandler(RedactingFormatter(fields=PII_FIELDS))
+        logger.addHandler(h1)
+        return logger
