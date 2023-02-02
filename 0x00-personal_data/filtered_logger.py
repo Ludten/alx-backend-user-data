@@ -55,7 +55,8 @@ def get_logger() -> logging.Logger:
     """
     log and format data
     """
-    logger = logging.Logger("user_data", logging.INFO)
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
     logger.propagate = False
     h1 = logging.StreamHandler()
     h1.setFormatter(RedactingFormatter(fields=PII_FIELDS))
