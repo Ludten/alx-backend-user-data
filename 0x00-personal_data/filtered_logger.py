@@ -50,12 +50,13 @@ class RedactingFormatter(logging.Formatter):
                               "asctime": record.asctime,
                               "message": record.message}
 
-    def get_logger() -> logging.Logger:
-        """
-        log and format data
-        """
-        logger = logging.Logger("user_data", logging.INFO)
-        logger.propagate = False
-        h1 = logging.StreamHandler(RedactingFormatter(fields=PII_FIELDS))
-        logger.addHandler(h1)
-        return logger
+
+def get_logger() -> logging.Logger:
+    """
+    log and format data
+    """
+    logger = logging.Logger("user_data", logging.INFO)
+    logger.propagate = False
+    h1 = logging.StreamHandler(RedactingFormatter(fields=PII_FIELDS))
+    logger.addHandler(h1)
+    return logger
