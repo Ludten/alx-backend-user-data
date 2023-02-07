@@ -23,7 +23,7 @@ def unauthorized() -> str:
 
 
 @app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
-def unauthorized() -> str:
+def forbidden() -> str:
     """ GET /api/v1/forbidden
     Raise 403 error
     """
