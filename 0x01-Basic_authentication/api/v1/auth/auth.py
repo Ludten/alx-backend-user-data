@@ -3,7 +3,7 @@
 Module of Auth class
 """
 
-from typing import List, TypeVar
+from typing import List, TypeVar, Union
 from flask import request
 
 
@@ -24,7 +24,7 @@ class Auth:
             return False
         return True
 
-    def authorization_header(self, request=None) -> str:
+    def authorization_header(self, request=None) -> Union[str, None]:
         """
         Set authorization header
         """
