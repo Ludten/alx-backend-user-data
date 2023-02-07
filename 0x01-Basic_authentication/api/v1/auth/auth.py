@@ -20,8 +20,13 @@ class Auth:
             return True
         if excluded_paths is None or excluded_paths == []:
             return True
-        if path in excluded_paths or path + '/' in excluded_paths:
-            return False
+        for paths in excluded_paths:
+            if paths.endswith('*'):
+                if paths[:-1] in path:
+                    return False
+            else:
+                if path in paths or path + '/' in paths:
+                    return False
         return True
 
     def authorization_header(self, request=None) -> Union[str, None]:
