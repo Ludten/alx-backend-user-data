@@ -63,7 +63,7 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(
         self, user_email: str, user_pwd: str
-    ) -> TypeVar('User'):
+    ) -> Union[TypeVar('User'), None]:
         """
         Create a user object
         """
