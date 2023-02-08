@@ -71,6 +71,7 @@ class BasicAuth(Auth):
             return None
         if user_pwd is None or isinstance(user_pwd, str) is False:
             return None
+        User.load_from_file()
         if User.count() > 0:
             users = User.search({'email': user_email})
             if users != []:
