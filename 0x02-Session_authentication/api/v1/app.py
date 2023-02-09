@@ -26,6 +26,8 @@ if os.environ.get('AUTH_TYPE'):
         auth = SessionAuth()
     elif os.environ.get('AUTH_TYPE') == 'session_exp_auth':
         auth = SessionExpAuth()
+    elif os.environ.get('AUTH_TYPE') == 'session_db_auth':
+        auth = SessionExpAuth()
     else:
         auth = Auth()
 

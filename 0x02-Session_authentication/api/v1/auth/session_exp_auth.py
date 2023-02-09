@@ -28,6 +28,8 @@ class SessionExpAuth(SessionAuth):
         sess = super().create_session(user_id)
         if sess is None:
             return None
+        if isinstance(sess, str) is False:
+            return None
         self.user_id_by_session_id[sess] = {
             "user_id": user_id,
             "created_at": datetime.now()
@@ -41,6 +43,8 @@ class SessionExpAuth(SessionAuth):
         manager
         """
         if session_id is None:
+            return None
+        if isinstance(session_id, str) is False:
             return None
         if session_id not in self.user_id_by_session_id:
             return None
