@@ -16,9 +16,9 @@ class SessionExpAuth(SessionAuth):
 
     def __init__(self):
         super().__init__()
-        if int(os.environ.get('SESSION_DURATION')):
+        try:
             self.session_duration = int(os.environ.get('SESSION_DURATION'))
-        else:
+        except Exception:
             self.session_duration = 0
 
     def create_session(self, user_id: str = None) -> Union[str, None]:
