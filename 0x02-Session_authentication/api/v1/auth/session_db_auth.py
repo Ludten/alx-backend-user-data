@@ -14,10 +14,14 @@ class SessionDBAuth(SessionExpAuth):
     Session DB Authentication class
     """
 
-    def create_session(self, user_id: str = None) -> str:
+    def create_session(self, user_id: str = None) -> Union[str, None]:
         """
         Create a user session
         """
+        if user_id is None:
+            return None
+        if isinstance(user_id, str) is False:
+            return None
         s_id = super().create_session(user_id)
         userss = UserSession()
         userss.user_id = user_id
