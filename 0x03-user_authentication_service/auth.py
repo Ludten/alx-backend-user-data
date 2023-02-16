@@ -4,16 +4,17 @@ Auth module
 """
 
 import bcrypt
-from db import DB, User
+from db import DB
 from sqlalchemy.orm.exc import NoResultFound
 from typing import Union
+from user import User
 
 
 def _hash_password(password: str) -> bytes:
     """
     Hash a password
     """
-    bytes = password.encode('utf-8')
+    bytes = password.encode()
     salt = bcrypt.gensalt()
     hash = bcrypt.hashpw(bytes, salt)
     return hash
@@ -52,7 +53,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(email=email)
-            bytes = password.encode('utf-8')
+            bytes = password.encode()
             return bcrypt.checkpw(bytes, user.hashed_password)
         except Exception:
             return False
