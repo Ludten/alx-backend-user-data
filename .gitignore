@@ -129,3 +129,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+0x03-user_authentication_service/a.db
