@@ -5,7 +5,7 @@ flask app module
 
 
 from auth import Auth
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, redirect, request, abort
 
 
 app = Flask(__name__)
@@ -77,7 +77,7 @@ def logout():
     """
     DELETE /sessions
     Return:
-      - delete session on success
+      - delete session and redirect to / on success
       - abort(403) on failure
     """
     if request is None:
@@ -86,6 +86,7 @@ def logout():
     user = AUTH.get_user_from_session_id(s_id)
     if user:
         AUTH.destroy_session(user.id)
+        return redirect('/')
     else:
         abort(403)
 
