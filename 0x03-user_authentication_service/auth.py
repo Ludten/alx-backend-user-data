@@ -4,10 +4,9 @@ Auth module
 """
 
 import bcrypt
-from db import DB
+from db import DB, User
 from sqlalchemy.orm.exc import NoResultFound
 from typing import Union
-from user import User
 
 
 def _hash_password(password: str) -> bytes:
