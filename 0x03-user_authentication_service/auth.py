@@ -51,6 +51,10 @@ class Auth:
         """
         validated login credentials
         """
+        if email is None:
+            return False
+        if password is None:
+            return False
         try:
             user = self._db.find_user_by(email=email)
             bytes = password.encode()
