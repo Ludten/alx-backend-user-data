@@ -40,10 +40,10 @@ class Auth:
         Register a user into the database
         """
         try:
-            self._db.find_user_by(email=email)
+            user = self._db.find_user_by(email=email)
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
-        raise ValueError('User {} already exists'.format(email))
+        raise ValueError('User {} already exists'.format(user.email))
 
     def valid_login(self, email: str, password: str) -> bool:
         """
@@ -54,7 +54,7 @@ class Auth:
             if user is not None:
                 bytes = password.encode("utf-8")
                 return bcrypt.checkpw(bytes, user.hashed_password)
-        except NoResultFound:
+        except Exception:
             return False
         return False
 
