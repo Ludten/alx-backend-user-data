@@ -83,6 +83,8 @@ def logout():
     if request is None:
         abort(403)
     s_id = request.cookies.get("session_id")
+    if s_id is None:
+        abort(403)
     user = AUTH.get_user_from_session_id(s_id)
     if user:
         AUTH.destroy_session(user.id)
@@ -102,6 +104,8 @@ def profile():
     if request is None:
         abort(403)
     s_id = request.cookies.get("session_id")
+    if s_id is None:
+        abort(403)
     user = AUTH.get_user_from_session_id(s_id)
     if user:
         return jsonify({"email": "{}".format(user.email)})
