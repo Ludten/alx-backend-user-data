@@ -8,7 +8,6 @@ from db import DB
 from sqlalchemy.orm.exc import NoResultFound
 from typing import Union
 from user import User
-from uuid import uuid4
 
 
 def _hash_password(password: str) -> bytes:
@@ -19,6 +18,14 @@ def _hash_password(password: str) -> bytes:
     salt = bcrypt.gensalt()
     hash = bcrypt.hashpw(bytes, salt)
     return hash
+
+
+def _generate_uuid() -> str:
+    """
+    Generate UUID for auth
+    """
+    from uuid import uuid4
+    return str(uuid4())
 
 
 class Auth:
@@ -34,10 +41,9 @@ class Auth:
         """
         try:
             self._db.find_user_by(email=email)
+            raise ValueError('User {} already exists'.format(email))
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
-        else:
-            raise ValueError('User {} already exists'.format(email))
 
     def valid_login(self, email: str, password: str) -> bool:
         """
@@ -50,19 +56,13 @@ class Auth:
         except Exception:
             return False
 
-    def _generate_uuid(self) -> str:
-        """
-        Generate UUID for auth
-        """
-        return str(uuid4())
-
     def create_session(self, email) -> Union[str, None]:
         """
         create a session
         """
         try:
             user = self._db.find_user_by(email=email)
-            id = self._generate_uuid()
+            id = _generate_uuid()
             user.session_id = id
             self._db._session.commit()
             return user.session_id
