@@ -58,7 +58,7 @@ class Auth:
             return False
         return False
 
-    def create_session(self, email) -> Union[str, None]:
+    def create_session(self, email: str) -> Union[str, None]:
         """
         create a session
         """
