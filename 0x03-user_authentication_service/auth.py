@@ -15,10 +15,9 @@ def _hash_password(password: str) -> bytes:
     """
     Hash a password
     """
-    bytes = password.encode()
+    bytes = password.encode("utf-8")
     salt = bcrypt.gensalt()
-    hash = bcrypt.hashpw(bytes, salt)
-    return hash
+    return bcrypt.hashpw(bytes, salt)
 
 
 def _generate_uuid() -> str:
@@ -43,24 +42,22 @@ class Auth:
         """
         try:
             self._db.find_user_by(email=email)
-            raise ValueError('User {} already exists'.format(email))
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
+        raise ValueError('User {} already exists'.format(email))
 
     def valid_login(self, email: str, password: str) -> bool:
         """
         validated login credentials
         """
-        if email is None:
-            return False
-        if password is None:
-            return False
         try:
             user = self._db.find_user_by(email=email)
-            bytes = password.encode()
-            return bcrypt.checkpw(bytes, user.hashed_password)
-        except Exception:
+            if user is not None:
+                bytes = password.encode("utf-8")
+                return bcrypt.checkpw(bytes, user.hashed_password)
+        except NoResultFound:
             return False
+        return False
 
     def create_session(self, email) -> Union[str, None]:
         """
