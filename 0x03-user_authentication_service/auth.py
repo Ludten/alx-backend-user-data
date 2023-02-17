@@ -43,7 +43,6 @@ class Auth:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
             user = self._db.add_user(email, _hash_password(password))
-            self._db._session.commit()
             return user
         raise ValueError('User {} already exists'.format(user.email))
 
@@ -67,8 +66,7 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             id = _generate_uuid()
-            user.session_id = id
-            self._db._session.commit()
+            self._db.update_user(user.id, session_id=id)
             return user.session_id
         except Exception:
             return None
@@ -88,8 +86,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(id=user_id)
-            user.session_id = None
-            self._db._session.commit()
+            self._db.update_user(user.id, session_id=None)
         except Exception:
             return None
 
@@ -100,8 +97,7 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             t_id = str(uuid4())
-            user.reset_token = t_id
-            self._db._session.commit()
+            self._db.update_user(user.id, reset_token=t_id)
             return t_id
         except Exception:
             raise ValueError
@@ -113,7 +109,6 @@ class Auth:
         try:
             user = self._db.find_user_by(reset_token=reset_token)
             user.hashed_password = _hash_password(password)
-            user.reset_token = None
-            self._db._session.commit()
+            self._db.update_user(user.id, reset_token=None)
         except Exception:
             raise ValueError
